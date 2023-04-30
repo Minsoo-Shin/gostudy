@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-type person struct {
+type personA struct {
 	Name  string   `json:"name"`
 	Age   int      `json:"age"`
 	Hobby []string `json:"hobby"`
@@ -19,7 +19,7 @@ func TestMetadata(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				any: &person{
+				any: &personA{
 					Name:  "minsoo",
 					Age:   30,
 					Hobby: []string{"nil없애기", "심심코딩"},
