@@ -1,0 +1,96 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/problems": {
+            "get": {
+                "description": "선생님 코드 기준으로 문제를 조회한다.",
+                "tags": [
+                    "problem"
+                ],
+                "summary": "문제 조회",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "문제 생성",
+                "tags": [
+                    "problem"
+                ],
+                "summary": "문제 생성",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "description": "유저 조회 (학생, 학부모, 선생)",
+                "tags": [
+                    "user"
+                ],
+                "summary": "유저 조회 (학생, 학부모, 선생)",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "유저 생성 (학생, 학부모, 선생)",
+                "tags": [
+                    "user"
+                ],
+                "summary": "유저 생성 (학생, 학부모, 선생)",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        },
+        "/users/sign-in": {
+            "put": {
+                "description": "로그인",
+                "tags": [
+                    "user"
+                ],
+                "summary": "로그인",
+                "responses": {}
+            }
+        },
+        "/users/{userID}": {
+            "put": {
+                "description": "Parameter 참조",
+                "tags": [
+                    "user"
+                ],
+                "summary": "유저 정보 업데이트",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Parameter 참조",
+                "tags": [
+                    "user"
+                ],
+                "summary": "유저 탈퇴",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        }
+    }
+}

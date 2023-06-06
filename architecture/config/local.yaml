@@ -1,0 +1,21 @@
+app:
+  name: 'ggurugi'
+  version: '0.0.1'
+
+http:
+  port: ':3000'
+
+logger:
+  log_level: 'debug'
+
+mongo:
+  host: 'ggurugi.dytlz8p.mongodb.net'
+  user: 'ggurugi'
+  dbName: 'ggurugi'
+  password: 'ggurugi'
+  options:
+    minConnections: 10
+    maxConnections: 100
+
+jwt:
+  secret: GxVw9i8iTW+y4Bj8AIH5XnORAa7rsjTy0jkdiqHU5wo=

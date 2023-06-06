@@ -1,0 +1,62 @@
+info:
+  contact: {}
+paths:
+  /problems:
+    get:
+      description: 선생님 코드 기준으로 문제를 조회한다.
+      responses:
+        "200":
+          description: OK
+      summary: 문제 조회
+      tags:
+      - problem
+    post:
+      description: 문제 생성
+      responses:
+        "204":
+          description: No Content
+      summary: 문제 생성
+      tags:
+      - problem
+  /users:
+    get:
+      description: 유저 조회 (학생, 학부모, 선생)
+      responses:
+        "200":
+          description: OK
+      summary: 유저 조회 (학생, 학부모, 선생)
+      tags:
+      - user
+    post:
+      description: 유저 생성 (학생, 학부모, 선생)
+      responses:
+        "204":
+          description: No Content
+      summary: 유저 생성 (학생, 학부모, 선생)
+      tags:
+      - user
+  /users/{userID}:
+    delete:
+      description: Parameter 참조
+      responses:
+        "204":
+          description: No Content
+      summary: 유저 탈퇴
+      tags:
+      - user
+    put:
+      description: Parameter 참조
+      responses:
+        "204":
+          description: No Content
+      summary: 유저 정보 업데이트
+      tags:
+      - user
+  /users/sign-in:
+    put:
+      description: 로그인
+      responses: {}
+      summary: 로그인
+      tags:
+      - user
+swagger: "2.0"
