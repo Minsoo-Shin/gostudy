@@ -15,6 +15,7 @@ const (
 	lenWidth = 8 // 레코드 길이를 저장하는 바이트. 여기서 레코드는 로그에 저장한 데이터를 의미함
 )
 
+// 파일의 단순한 래퍼
 type store struct {
 	*os.File
 	mu   sync.Mutex
@@ -22,7 +23,6 @@ type store struct {
 	size uint64
 }
 
-// file size
 func newStore(f *os.File) (*store, error) {
 	fi, err := os.Stat(f.Name())
 	if err != nil {
