@@ -1,5 +1,5 @@
 app:
-  name: 'ggurugi'
+  name: 'app'
   version: '0.0.1'
 
 http:
@@ -9,13 +9,13 @@ logger:
   log_level: 'debug'
 
 mongo:
-  host: 'ggurugi.dytlz8p.mongodb.net'
-  user: 'ggurugi'
-  dbName: 'ggurugi'
-  password: 'ggurugi'
+  host: '127.0.0.1'
+  user: 'user'
+  dbName: 'dbname'
+  password: 'password'
   options:
     minConnections: 10
     maxConnections: 100
 
 jwt:
-  secret: GxVw9i8iTW+y4Bj8AIH5XnORAa7rsjTy0jkdiqHU5wo=
+  secret: 'secret'
