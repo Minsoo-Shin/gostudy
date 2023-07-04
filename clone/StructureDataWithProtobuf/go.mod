@@ -1,8 +1,9 @@
-module github.com/Minsoo-Shin/proglog
+module github.com/Minsoo-Shin/gostudy/clone/proglog
 
 go 1.20
 
 require (
+	github.com/gorilla/mux v1.8.0
 	github.com/stretchr/testify v1.8.4
 	github.com/tysonmote/gommap v0.0.2
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230530153820-e85fd2cbaebc

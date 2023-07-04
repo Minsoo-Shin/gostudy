@@ -71,10 +71,6 @@ func (s *httpServer) handleConsume(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	record, err := s.Log.Read(req.Offset)
-	if err == ErrOffsetNotFound {
-		http.Error(w, err.Error(), http.StatusNotFound)
-		return
-	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
