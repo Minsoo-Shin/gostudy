@@ -1,8 +1,8 @@
 package log
 
 import (
+	api "github.com/Minsoo-Shin/proglog/api/v1"
 	"github.com/stretchr/testify/assert"
-	api "gostudy/clone/StructureDataWithProtobuf/api/v1"
 	"io"
 	"io/ioutil"
 	"os"

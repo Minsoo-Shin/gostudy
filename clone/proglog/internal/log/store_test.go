@@ -47,6 +47,7 @@ func Test_Write(t *testing.T) {
 	fileInfo, _ := f.Stat()
 	fmt.Println("a", fileInfo.Size())
 	buf.Flush()
+	fileInfo, _ = f.Stat()
 	fmt.Println("a", fileInfo.Size())
 }
 

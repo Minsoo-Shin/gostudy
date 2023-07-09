@@ -2,9 +2,9 @@ package log
 
 import (
 	"fmt"
+	api "github.com/Minsoo-Shin/proglog/api/v1"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/proto"
-	api "gostudy/clone/StructureDataWithProtobuf/api/v1"
 	"io/ioutil"
 	"os"
 	"path"

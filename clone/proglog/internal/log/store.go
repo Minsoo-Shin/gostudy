@@ -50,6 +50,7 @@ func (s *store) Append(p []byte) (n uint64, pos uint64, err error) {
 	if err != nil {
 		return 0, 0, err
 	}
+	// 바이트 길이는 고정
 	w += lenWidth
 	s.size += uint64(w)
 	return uint64(w), pos, nil
@@ -63,10 +64,12 @@ func (s *store) Read(pos uint64) ([]byte, error) {
 	if err := s.buf.Flush(); err != nil {
 		return nil, err
 	}
+	// 읽으려는 레코드의 사이즈를 저장해뒀음.
 	size := make([]byte, lenWidth)
 	if _, err := s.File.ReadAt(size, int64(pos)); err != nil {
 		return nil, err
 	}
+	// 사이즈에 해당하는 바이트 배열을 할당한 후 읽는다.
 	b := make([]byte, enc.Uint64(size))
 	if _, err := s.File.ReadAt(b, int64(pos+lenWidth)); err != nil {
 		return nil, err

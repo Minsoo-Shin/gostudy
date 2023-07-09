@@ -5,8 +5,8 @@ import (
 	"os"
 	"path"
 
+	api "github.com/Minsoo-Shin/proglog/api/v1"
 	"google.golang.org/protobuf/proto"
-	api "gostudy/clone/StructureDataWithProtobuf/api/v1"
 )
 
 type segment struct {

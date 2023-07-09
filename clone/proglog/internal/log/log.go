@@ -1,7 +1,7 @@
 package log
 
 import (
-	api "gostudy/clone/StructureDataWithProtobuf/api/v1"
+	api "github.com/Minsoo-Shin/proglog/api/v1"
 	"io"
 	"io/ioutil"
 	"os"
