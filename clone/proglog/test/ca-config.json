@@ -2,7 +2,7 @@
   "signing": {
     "profiles": {
       "server": {
-        "expiy": "8760h",
+        "expiry": "8760h",
         "usages": [
           "signing",
           "key encipherment",
