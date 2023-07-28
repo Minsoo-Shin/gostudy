@@ -2,48 +2,51 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 	"strings"
 )
 
-var (
+const (
 	ListenDefault              = "127.0.0.1:3000"
-	MessageBrokerTypeDefault   = "kafka"
-	KafkaMessageBrokersDefault = []string{"localhost:29092"}
+	KafkaMessageBrokersDefault = "localhost:29092"
 )
 
 type Config struct {
-	Listen              string   `json:"listen"`
-	MessageBrokerType   string   `json:"message_broker_type"`
-	KafkaMessageBrokers []string `json:"kafka_message_brokers"`
+	Listen string    `json:"listen"`
+	Kafka  KafkaConf `json:"kafka"`
+}
+
+type KafkaConf struct {
+	MessageBrokers []string `json:"kafka_message_brokers"`
+	ReturnSuccess  bool     `json:"return_success"`
 }
 
 func NewConfig(filename string) (*Config, error) {
+	// set default conf
 	conf := &Config{
-		ListenDefault,
-		MessageBrokerTypeDefault,
-		KafkaMessageBrokersDefault,
+		Listen: ListenDefault,
+		Kafka: KafkaConf{
+			MessageBrokers: []string{KafkaMessageBrokersDefault},
+			ReturnSuccess:  true,
+		},
 	}
-
+	// via file
 	file, err := os.Open(filename)
 	if err != nil {
-		fmt.Println("Configuration file not found. Continuing with default values.")
 		return conf, err
 	}
 
 	if err = json.NewDecoder(file).Decode(&conf); err != nil {
-		log.Fatalf("decode err: %v", err)
+		log.Fatalf("err decode: %v", err)
 	}
 
 	if v := os.Getenv("LISTEN"); v != "" {
 		conf.Listen = v
 	}
 
-	if v := os.Getenv("KAFKA_BROKER_URLS"); v != "" {
-		conf.MessageBrokerType = "kafka"
-		conf.KafkaMessageBrokers = strings.Split(v, ",")
+	if v := os.Getenv("KAFKA_BROKERS"); v != "" {
+		conf.Kafka.MessageBrokers = strings.Split(v, ",")
 	}
 
 	return conf, nil

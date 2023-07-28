@@ -31,6 +31,7 @@ func (p *EventProcessor) ProcessEvents() {
 }
 
 func (p *EventProcessor) handleEvent(event msgqueue.Event) {
+	fmt.Println("!!handle event!!")
 	switch e := event.(type) {
 	case *contracts.EventCreatedEvent:
 		log.Printf("event %v created: %v", e.ID, e)

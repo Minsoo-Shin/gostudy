@@ -2,7 +2,9 @@ package rest
 
 import (
 	"encoding/json"
+	"github.com/Minsoo-Shin/kafka/domain/contracts"
 	"github.com/Minsoo-Shin/kafka/pkg/msgqueue"
+	"log"
 	"net/http"
 )
 
@@ -10,21 +12,13 @@ type EventHandler struct {
 	eventEmitter msgqueue.EventEmitter
 }
 
-type eventRequest struct {
-	UserID int    `json:"userID"`
-	Name   string `json:"Name"`
-}
-
-func (r eventRequest) EventName() string {
-	return r.Name
-}
-
 type eventResponse struct {
 	Name string `json:"name"`
 }
 
 func (e *EventHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var request eventRequest
+	log.Println("http get")
+	var request contracts.EventCreatedEvent
 	decoder := json.NewDecoder(r.Body)
 
 	err := decoder.Decode(&request)
@@ -33,7 +27,7 @@ func (e *EventHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = e.eventEmitter.Emit(request)
+	err = e.eventEmitter.Emit(&request)
 	if err != nil {
 		http.Error(w, "err return", http.StatusInternalServerError)
 		return
