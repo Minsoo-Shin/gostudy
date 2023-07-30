@@ -2,9 +2,9 @@ package rest
 
 import (
 	"encoding/json"
-	"github.com/Minsoo-Shin/kafka/domain/contracts"
+	"fmt"
+	pb "github.com/Minsoo-Shin/kafka/api/v1"
 	"github.com/Minsoo-Shin/kafka/pkg/msgqueue"
-	"log"
 	"net/http"
 )
 
@@ -17,8 +17,8 @@ type eventResponse struct {
 }
 
 func (e *EventHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	log.Println("http get")
-	var request contracts.EventCreatedEvent
+	fmt.Println("!!!http post!!!!")
+	var request pb.Message
 	decoder := json.NewDecoder(r.Body)
 
 	err := decoder.Decode(&request)
@@ -27,13 +27,13 @@ func (e *EventHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = e.eventEmitter.Emit(&request)
+	err = e.eventEmitter.Emit(pb.Topic_AclosetNotification, &request)
 	if err != nil {
 		http.Error(w, "err return", http.StatusInternalServerError)
 		return
 	}
 
-	response := eventResponse{request.Name}
+	response := eventResponse{request.GetMsg()}
 	encoder := json.NewEncoder(w)
 	_ = encoder.Encode(response)
 }

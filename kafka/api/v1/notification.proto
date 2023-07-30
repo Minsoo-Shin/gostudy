@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package notification.v1;
+
+option go_package = "github.com/Minsoo-Shin/api/notification_v1";
+
+message Message {
+//  string eventName = 1;
+  string msg = 2;
+  string fcmToken = 3;
+}
+
+enum Topic {
+  AclosetNotification = 0;
+}

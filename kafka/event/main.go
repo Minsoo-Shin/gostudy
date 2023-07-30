@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	pb "github.com/Minsoo-Shin/kafka/api/v1"
 	"github.com/Minsoo-Shin/kafka/event/listener"
 	"github.com/Minsoo-Shin/kafka/event/rest"
 	"github.com/Minsoo-Shin/kafka/pkg/config"
@@ -22,14 +23,16 @@ func main() {
 	conn := kafka.NewKafkaClient(conf)
 
 	eventEmitter, err = kafka.NewKafkaEventEmitter(conn)
-	eventListener, err = kafka.NewKafkaEventListener(conn, []int32{})
+	if err != nil {
+		panic(err)
+	}
+	eventListener, err = kafka.NewKafkaEventListener(conn, pb.Topic_AclosetNotification, []int32{})
 	if err != nil {
 		panic(err)
 	}
 
-	//dbhandler, _ := dblayer.NewPersistenceLayer(config.Databasetype, config.DBConnection)
-
 	processor := listener.EventProcessor{EventListener: eventListener}
 	go processor.ProcessEvents()
+
 	rest.ServeAPI(conf.Listen, eventEmitter)
 }

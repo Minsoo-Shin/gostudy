@@ -1,5 +1,9 @@
 package msgqueue
 
+import (
+	pb "github.com/Minsoo-Shin/kafka/api/v1"
+)
+
 type EventEmitter interface {
-	Emit(e Event) error
+	Emit(topic pb.Topic, req *pb.Message) error
 }

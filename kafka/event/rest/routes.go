@@ -11,7 +11,7 @@ import (
 
 func ServeAPI(listenAddr string, eventEmitter msgqueue.EventEmitter) {
 	r := mux.NewRouter()
-	r.Methods("get").Path("/event").Handler(&EventHandler{eventEmitter: eventEmitter})
+	r.Methods("post").Path("/event").Handler(&EventHandler{eventEmitter: eventEmitter})
 
 	srv := http.Server{
 		Handler:      r,

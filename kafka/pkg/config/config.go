@@ -18,8 +18,9 @@ type Config struct {
 }
 
 type KafkaConf struct {
-	MessageBrokers []string `json:"kafka_message_brokers"`
-	ReturnSuccess  bool     `json:"return_success"`
+	MessageBrokers []string `json:"messageBrokers"`
+	IsAsync        bool     `json:"isAsync"`
+	ReturnSuccess  bool     `json:"returnSuccess"`
 }
 
 func NewConfig(filename string) (*Config, error) {

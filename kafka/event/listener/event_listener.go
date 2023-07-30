@@ -2,20 +2,19 @@ package listener
 
 import (
 	"fmt"
-	"github.com/Minsoo-Shin/kafka/domain/contracts"
+	pb "github.com/Minsoo-Shin/kafka/api/v1"
 	"github.com/Minsoo-Shin/kafka/pkg/msgqueue"
 	"log"
 )
 
 type EventProcessor struct {
+	Topic         pb.Topic
 	EventListener msgqueue.EventListener
+	// DB
 }
 
 func (p *EventProcessor) ProcessEvents() {
-	log.Println("listening or events")
-
-	received, errors, err := p.EventListener.Listen("eventCreated")
-
+	received, errors, err := p.EventListener.Listen()
 	if err != nil {
 		panic(err)
 	}
@@ -23,19 +22,19 @@ func (p *EventProcessor) ProcessEvents() {
 	for {
 		select {
 		case evt := <-received:
-			p.handleEvent(evt)
+			p.sendMessage(evt, errors)
 		case err = <-errors:
 			fmt.Printf("got error while receiving event: %s\n", err)
+			// save error in DB
 		}
 	}
 }
 
-func (p *EventProcessor) handleEvent(event msgqueue.Event) {
-	fmt.Println("!!handle event!!")
-	switch e := event.(type) {
-	case *contracts.EventCreatedEvent:
-		log.Printf("event %v created: %v", e.ID, e)
-	default:
-		log.Printf("unknown event type: %v", e)
+func (p *EventProcessor) sendMessage(event pb.Message, errChan chan error) {
+	var err error
+	// FCM Message
+	log.Printf("msg: %v\n to: %v\n", event.GetMsg(), event.GetFcmToken())
+	if err != nil {
+		errChan <- err
 	}
 }
