@@ -2,7 +2,6 @@ package rest
 
 import (
 	"encoding/json"
-	"fmt"
 	pb "github.com/Minsoo-Shin/kafka/api/v1"
 	"github.com/Minsoo-Shin/kafka/pkg/msgqueue"
 	"net/http"
@@ -17,7 +16,6 @@ type eventResponse struct {
 }
 
 func (e *EventHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("!!!http post!!!!")
 	var request pb.Message
 	decoder := json.NewDecoder(r.Body)
 

@@ -15,6 +15,11 @@ type kafkaEventListener struct {
 	partitions []int32
 }
 
+type event struct {
+	event pb.Message
+	err   error
+}
+
 func NewKafkaEventListener(client sarama.Client, topic pb.Topic, partitions []int32) (msgqueue.EventListener, error) {
 	consumer, err := sarama.NewConsumerFromClient(client)
 	if err != nil {

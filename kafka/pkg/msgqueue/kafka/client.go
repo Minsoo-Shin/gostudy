@@ -4,23 +4,16 @@ import (
 	"github.com/IBM/sarama"
 	"github.com/Minsoo-Shin/kafka/pkg/config"
 	"log"
-	"time"
 )
 
 func NewKafkaClient(conf *config.Config) sarama.Client {
-	kafkaConf := sarama.NewConfig()
+	config := sarama.NewConfig()
 
-	if conf.Kafka.IsAsync {
-		// 비동기
-		kafkaConf.Producer.RequiredAcks = sarama.NoResponse
-		kafkaConf.Producer.Compression = sarama.CompressionSnappy
-		kafkaConf.Producer.Flush.Frequency = 1 * time.Millisecond
-	} else {
-		// 동기
-		kafkaConf.Producer.Return.Successes = conf.Kafka.ReturnSuccess
-	}
+	config.Producer.RequiredAcks = sarama.WaitForAll // Wait for all in-sync replicas to ack the message
+	config.Producer.Retry.Max = 10                   // Retry up to 10 times to produce the message
+	config.Producer.Return.Successes = true
 
-	client, err := sarama.NewClient(conf.Kafka.MessageBrokers, kafkaConf)
+	client, err := sarama.NewClient(conf.Kafka.MessageBrokers, config)
 	if err != nil {
 		log.Fatalf("Failed to load kafka client", err)
 	}
