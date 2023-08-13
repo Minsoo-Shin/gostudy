@@ -1,11 +1,10 @@
 package listener
 
 import (
-	"context"
+	"errors"
 	"fmt"
 	pb "github.com/Minsoo-Shin/kafka/api/v1"
 	"github.com/Minsoo-Shin/kafka/pkg/msgqueue"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
 )
@@ -23,13 +22,13 @@ func (p *EventProcessor) ProcessEvents() {
 		panic(err)
 	}
 
-	var retryMsg chan pb.Message
+	var retryMsg = make(chan pb.Message)
 	for {
 		select {
 		case evt := <-received:
 			time.Sleep(time.Second * 1)
 			fmt.Println("sendFCM start")
-			p.sendFCM(evt, errors, retryMsg)
+			go p.sendFCM(evt, errors, retryMsg)
 			fmt.Println("sendFCM end")
 		case err = <-errors:
 			// save error in DB
@@ -38,8 +37,8 @@ func (p *EventProcessor) ProcessEvents() {
 			fmt.Println("error channel end")
 		case event := <-retryMsg:
 			fmt.Printf("retry: %v", event.GetMsg())
-			p.mongodb.Collection("myCollection").
-				InsertOne(context.Background(), bson.M{"errorEvent": event.GetMsg()})
+			//p.mongodb.Collection("myCollection").
+			//	InsertOne(context.Background(), bson.M{"errorEvent": event.GetMsg()})
 		}
 	}
 }
@@ -48,8 +47,9 @@ func (p *EventProcessor) sendFCM(event pb.Message, errChan chan error, retryEven
 	var err error
 	// FCM Message
 	fmt.Printf("fcm service: (%v) to: %v\n", event.GetMsg(), event.GetFcmToken())
-	//errChan <- errors.New("new Error")
+	err = errors.New("new Error")
 	if err != nil {
+		retryEvent <- event
 		errChan <- err
 	}
 }
