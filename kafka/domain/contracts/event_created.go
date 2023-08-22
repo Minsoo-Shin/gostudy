@@ -1,12 +1,12 @@
 package contracts
 
-// EventCreatedEvent is emitted whenever a new event is created
-type EventCreatedEvent struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+import pb "github.com/Minsoo-Shin/kafka/api/v1"
+
+type EventNew struct {
+	pb.Message
 }
 
 // EventName returns the event's name
-func (c *EventCreatedEvent) EventName() string {
+func (c *EventNew) EventName() string {
 	return "eventCreated"
 }

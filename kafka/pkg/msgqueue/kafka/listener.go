@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"github.com/IBM/sarama"
 	pb "github.com/Minsoo-Shin/kafka/api/v1"
+	"github.com/Minsoo-Shin/kafka/pkg/config"
 	msgqueue "github.com/Minsoo-Shin/kafka/pkg/msgqueue"
 	"log"
 )
 
 type kafkaEventListener struct {
-	topic      pb.Topic
-	consumer   sarama.Consumer
-	partitions []int32
+	topic    pb.Topic
+	consumer sarama.Consumer
 }
 
 type event struct {
@@ -20,36 +20,37 @@ type event struct {
 	err   error
 }
 
-func NewKafkaEventListener(client sarama.Client, topic pb.Topic, partitions []int32) (msgqueue.EventListener, error) {
+func NewKafkaEventListener(conf *config.Config, topic pb.Topic) (msgqueue.EventListener, error) {
+	config := sarama.NewConfig()
+
+	config.Consumer.Offsets.Initial = sarama.OffsetNewest
+
+	client, err := sarama.NewClient(conf.Kafka.MessageBrokers, config)
+	if err != nil {
+		log.Fatalf("Failed to load kafka client", err)
+	}
+
 	consumer, err := sarama.NewConsumerFromClient(client)
 	if err != nil {
 		return nil, err
 	}
 
 	listener := &kafkaEventListener{
-		topic:      topic,
-		consumer:   consumer,
-		partitions: partitions,
+		topic:    topic,
+		consumer: consumer,
 	}
 
 	return listener, nil
 }
 
-func (k *kafkaEventListener) Listen() (<-chan pb.Message, chan error, error) {
-	var err error
-
+func (k *kafkaEventListener) Listen() (<-chan msgqueue.Event, chan error, error) {
 	results := make(chan pb.Message)
 	errors := make(chan error)
 
-	partitions := k.partitions
-	if len(partitions) == 0 {
-		partitions, err = k.consumer.Partitions(k.topic.String())
-		if err != nil {
-			return nil, nil, err
-		}
+	partitions, err := k.consumer.Partitions(k.topic.String())
+	if err != nil {
+		log.Fatalf("topic")
 	}
-
-	log.Printf("topic %s has partitions: %v", k.topic.String(), partitions)
 
 	for _, partition := range partitions {
 		log.Printf("consuming partition %s:%d", k.topic.String(), partition)

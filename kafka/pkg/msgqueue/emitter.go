@@ -5,5 +5,5 @@ import (
 )
 
 type EventEmitter interface {
-	Emit(topic pb.Topic, req *pb.Message) error
+	Emit(topic pb.Topic, req Event) error
 }
