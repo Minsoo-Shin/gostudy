@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package users.v1;
+option go_package = "github.com/Minsoo-Shin/users/v1";
+
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Acloset";
+    version: "1.0";
+    contact: {
+      name: "minsoo shin";
+      url: "https://github.com/Minsoo-Shin/open_api_gen";
+      email: "alstn5038@gmail.com";
+    };
+    license: {
+      name: "BSD 3-Clause License";
+      url: "https://github.com/Minsoo-Shin/open_api_gen/LICENSE";
+    };
+  };
+
+  schemes: HTTP;
+  schemes: HTTPS;
+  consumes: "application/json";
+  produces: "application/json";
+};
+
+message Error {
+  uint32 code = 1;
+  string message = 2;
+}
+
+service UserService {
+  rpc Fetch(UserFilter) returns (UserInfo) {
+    option (google.api.http) = {
+      get: "/api/v1/users"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Fetch User"
+      description: "Fetch User With Filter"
+      tags: "Users"
+    };
+  };
+  rpc Create(UserRequest) returns (UserInfo) {
+    option (google.api.http) = {
+      post: "/api/v1/users"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create User"
+      description: "Create User"
+      tags: "Users"
+    };
+  };
+}
+
+message UserRequest {
+  string nickname = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message UserFilter {
+  repeated uint64 ids = 1;
+  repeated string nickname = 2;
+  string email = 3;
+}
+
+message User {
+  int64 id = 1;
+  string nickname = 2;
+  string email = 3;
+  string password = 4;
+}
+
+message UserInfo {
+  Error error = 1;
+  repeated User users = 2;
+}
