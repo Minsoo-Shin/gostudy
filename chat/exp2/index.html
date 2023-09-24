@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GGurugi Chat - Home</title>
+    <style type="text/css">
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        .home_wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            /*min-height: 90vh;*/
+            justify-content: space-between;
+        }
+
+        .header {
+            background-color: #2755F6;
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            color: #2755F6;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #2755F6;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #1E44B7;
+        }
+    </style>
+</head>
+<body>
+<div class="home_wrap">
+    <div class="header">
+        GGurugi Chat
+    </div>
+    <div class="content">
+        <h1>Welcome to GGurugi Chat</h1>
+        <p>Join the conversation and connect with friends.</p>
+        <a href="/login" class="btn" id="loginBtn">Login</a>
+        <a href="/signup" class="btn" id="signupBtn">Sign Up</a>
+    </div>
+</div>
+<div id="roomCreationModal" class="modal">
+    <div class="modal-content">
+        <h2>Create a Chat Room</h2>
+        <input type="text" id="roomName" placeholder="Enter a room name">
+        <button id="createRoomBtn" class="login-button">Create</button>
+    </div>
+</div>
+
+<div id="roomJoinModal" class="modal">
+    <div class="modal-content">
+        <h2>Join a Chat Room</h2>
+        <input type="text" id="joinRoomName" placeholder="Enter the room name">
+        <button id="joinRoomBtn" class="login-button">Join</button>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const loginForm = document.getElementById("login-form");
+
+        const loginBtn = document.getElementById("loginBtn");
+        const signupBtn = document.getElementById("signupBtn");
+        const roomCreationModal = document.getElementById("roomCreationModal");
+        const roomJoinModal = document.getElementById("roomJoinModal");
+        const createRoomBtn = document.getElementById("createRoomBtn");
+        const joinRoomBtn = document.getElementById("joinRoomBtn");
+
+        // Check if there's a token in localStorage
+        const token = localStorage.getItem("token");
+        if (token) {
+            // Token is present, show room creation and room join buttons
+            // (you can style these buttons as needed)
+            loginBtn.style.display = "none";
+            signupBtn.style.display = "none";
+            createRoomBtn.style.display = "block";
+            joinRoomBtn.style.display = "block";
+        }
+
+        createRoomBtn.addEventListener("click", function () {
+            roomCreationModal.style.display = "block";
+        });
+
+        joinRoomBtn.addEventListener("click", function () {
+            roomJoinModal.style.display = "block";
+        });
+
+        // Handle room creation
+        createRoomBtn.addEventListener("click", function () {
+            const roomName = document.getElementById("roomName").value;
+            // Send a POST request to create the chat room with the roomName
+            fetch("/create-room", {
+                method: "POST",
+                body: JSON.stringify({ roomName }),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response (e.g., close the modal, show a message)
+                    roomCreationModal.style.display = "none";
+                    alert(`Chat room "${roomName}" created successfully!`);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+
+        // Handle room joining
+        joinRoomBtn.addEventListener("click", function () {
+            const joinRoomName = document.getElementById("joinRoomName").value;
+            // Send a POST request to join the chat room with the joinRoomName
+            fetch("/join-room", {
+                method: "POST",
+                body: JSON.stringify({ roomName: joinRoomName }),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response (e.g., close the modal, show a message)
+                    roomJoinModal.style.display = "none";
+                    alert(`Joined chat room "${joinRoomName}" successfully!`);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+    });
+</script>
+</body>
+</html>
