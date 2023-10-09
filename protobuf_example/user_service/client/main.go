@@ -19,7 +19,7 @@ const (
 )
 
 var (
-	addr        = flag.String("addr", "localhost:50051", "the address to connect to")
+	addr        = flag.String("addr", "localhost:3000", "the address to connect to")
 	name        = flag.String("name", defaultName, "Name")
 	email       = flag.String("email", defaultEmail, "Email")
 	password    = flag.String("password", defaultPassword, "Password")

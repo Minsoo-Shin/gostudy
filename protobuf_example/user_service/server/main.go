@@ -5,15 +5,21 @@ import (
 	"flag"
 	"fmt"
 	pb "github.com/Minsoo-Shin/protobuf_user/api/v1"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 	"math/rand"
 	"net"
+	"net/http"
+	"strings"
 )
 
 var (
-	port = flag.Int("port", 50051, "The server port")
+	port = flag.Int("port", 3000, "The server port")
 )
 
 type server struct {
@@ -31,6 +37,17 @@ func (s *server) CreateUser(ctx context.Context, in *pb.CreateUserRequest) (*pb.
 	}, nil
 }
 
+func allHandler(grpcServer *grpc.Server, httpHandler http.Handler) http.Handler {
+	return h2c.NewHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("request", fmt.Sprintf("%+v", r))
+		if r.ProtoMajor == 2 && strings.Contains(r.Header.Get("Content-Type"), "application/grpc") {
+			grpcServer.ServeHTTP(w, r)
+		} else {
+			httpHandler.ServeHTTP(w, r)
+		}
+	}), &http2.Server{})
+}
+
 func main() {
 	flag.Parse()
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
@@ -40,7 +57,30 @@ func main() {
 	s := grpc.NewServer()
 	pb.RegisterUserServer(s, &server{})
 	log.Printf("server listening at %v", lis.Addr())
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+	go func() {
+		if err := s.Serve(lis); err != nil {
+			log.Fatalf("failed to serve: %v", err)
+		}
+	}()
+
+	gwmux := runtime.NewServeMux(
+		runtime.WithMarshalerOption(
+			runtime.MIMEWildcard,
+			&runtime.JSONPb{
+				MarshalOptions:   protojson.MarshalOptions{},
+				UnmarshalOptions: protojson.UnmarshalOptions{},
+			}),
+	)
+
+	err = pb.RegisterUserHandlerFromEndpoint(context.Background(), gwmux, lis.Addr().String(), []grpc.DialOption{
+		grpc.WithInsecure(),
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	err = http.ListenAndServe(lis.Addr().String()+"1", allHandler(s, gwmux))
+	if err != nil {
+		panic(err)
 	}
 }

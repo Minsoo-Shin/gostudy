@@ -97,8 +97,6 @@
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const loginForm = document.getElementById("login-form");
-
         const loginBtn = document.getElementById("loginBtn");
         const signupBtn = document.getElementById("signupBtn");
         const roomCreationModal = document.getElementById("roomCreationModal");
@@ -129,9 +127,9 @@
         createRoomBtn.addEventListener("click", function () {
             const roomName = document.getElementById("roomName").value;
             // Send a POST request to create the chat room with the roomName
-            fetch("/create-room", {
+            fetch("/room:add", {
                 method: "POST",
-                body: JSON.stringify({ roomName }),
+                body: JSON.stringify({ "name":roomName }),
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
@@ -152,7 +150,7 @@
         joinRoomBtn.addEventListener("click", function () {
             const joinRoomName = document.getElementById("joinRoomName").value;
             // Send a POST request to join the chat room with the joinRoomName
-            fetch("/join-room", {
+            fetch("/room:join", {
                 method: "POST",
                 body: JSON.stringify({ roomName: joinRoomName }),
                 headers: {

@@ -5,7 +5,6 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
-	"sync"
 	"time"
 )
 
@@ -45,12 +44,16 @@ type Client struct {
 	// Buffered channel of outbound messages.
 	send chan msgStruct
 
+	// only a Room
+	room *Room
+
 	// nickname
 	nickname string
 }
 
 type msgStruct struct {
 	From    string `json:"from"`
+	ToRoom  string `json:"toRoom"`
 	Message string `json:"message"`
 }
 
@@ -61,18 +64,25 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	mu := sync.Mutex{}
-	mu.Lock()
-	nickname := nicknameList[nicknameIndex%len(nicknameList)]
-	nicknameIndex++
-	mu.Unlock()
+	bearerToken := r.Header.Get("Authorization")
+
+	claims := ParseToken(bearerToken)
+
+	var memberRoom *Room
+	for r := range Rooms {
+		_, ok := r.Clients[claims["memberId"].(string)]
+		if ok {
+			memberRoom = r
+		}
+	}
 
 	msg := make(chan msgStruct, 256)
 	client := &Client{
 		hub:      hub,
 		conn:     conn,
 		send:     msg,
-		nickname: nickname,
+		room:     memberRoom,
+		nickname: claims["nickname"].(string),
 	}
 	client.hub.register <- client
 

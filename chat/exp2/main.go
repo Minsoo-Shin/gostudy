@@ -16,9 +16,11 @@ func main() {
 	hub := newHub()
 	go hub.run()
 	http.HandleFunc("/login", login)
-	http.HandleFunc("/room:add", createRoom)
-	http.HandleFunc("room:join", joinRoom)
 	http.HandleFunc("/", serveHome)
+	http.HandleFunc("/room:add", func(w http.ResponseWriter, r *http.Request) {
+		createRoom(hub, w, r)
+	})
+	http.HandleFunc("room:join", joinRoom)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)
 	})

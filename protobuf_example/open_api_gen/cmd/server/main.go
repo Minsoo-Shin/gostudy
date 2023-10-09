@@ -62,13 +62,12 @@ func Run(dialAddr string) error {
 		return fmt.Errorf("failed to dial server: %w", err)
 	}
 
-	//mux := http.NewServeMux()
-	//mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, req *http.Request) {
-	//	io.Copy(w, strings.NewReader())
-	//})
-
 	gwmux := runtime.NewServeMux(
 		runtime.WithErrorHandler(users.CustomErrorHandler),
+		runtime.WithMarshalerOption(
+			runtime.MIMEWildcard,
+			&runtime.JSONPb{},
+		),
 	)
 	err = pb.RegisterUserServiceHandler(context.Background(), gwmux, conn)
 	if err != nil {
@@ -105,9 +104,6 @@ func getOpenAPIHandler() http.Handler {
 		// Panic since this is a permanent error.
 		panic("creating OpenAPI filesystem: " + err.Error())
 	}
-	prefix := "/swagger-ui/"
-	mux.Handle(prefix, http.StripPrefix(prefix, fileServer))
 	oa := http.FileServer(statikFS)
-	oa.ServeHTTP()
-	return
+	return oa
 }

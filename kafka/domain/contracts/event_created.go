@@ -1,12 +1,11 @@
 package contracts
 
-import pb "github.com/Minsoo-Shin/kafka/api/v1"
-
-type EventNew struct {
-	pb.Message
+type EventCreatedEvent struct {
+	EventID      int    `json:"eventID"`
+	EventMessage string `json:"eventMessage"`
 }
 
 // EventName returns the event's name
-func (c *EventNew) EventName() string {
+func (c *EventCreatedEvent) EventName() string {
 	return "eventCreated"
 }

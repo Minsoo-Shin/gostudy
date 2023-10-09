@@ -12,9 +12,10 @@ var (
 )
 
 type Member struct {
-	Id       int    `json:"id"`
+	Id       string `json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password,omitempty"`
+	Nickname string `json:"nickname"`
 }
 
 type MemberWithToken struct {
@@ -24,13 +25,15 @@ type MemberWithToken struct {
 
 func init() {
 	MemberDB = append(MemberDB, Member{
-		Id:       1,
+		Id:       "1",
 		Username: "test1",
 		Password: "123",
+		Nickname: "test계정1",
 	}, Member{
-		Id:       2,
+		Id:       "2",
 		Username: "test2",
 		Password: "123",
+		Nickname: "test계정2",
 	})
 }
 
@@ -50,8 +53,9 @@ func login(w http.ResponseWriter, r *http.Request) {
 				m.Password = ""
 
 				token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-					"memberId": m.Id,
-					"nbf":      time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+					"memberId":   m.Id,
+					"nickname":   m.Nickname,
+					"signupDate": time.Now().UTC(),
 				})
 
 				//Sign and get the complete encoded token as a string using the secret

@@ -3,11 +3,24 @@ syntax = "proto3";
 package user.v1;
 
 import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/Minsoo-Shin/protobuf_user";
 
 service User {
-  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {}
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/users"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Fetch User"
+      description: "Fetch User With Filter"
+      tags: "Users"
+    };
+  }
 }
 
 enum PhoneType {

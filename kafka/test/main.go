@@ -21,13 +21,13 @@ func main() {
 	//		fmt.Println(re)
 	//	}
 	//}
-
-	/*
-		반복적으로 시간을 프린트한다.
-		외부에서 종료 시그널을 주면 go routine을 종료한다.
-	*/
-
-	infiniteLoop(terminate)
+	//
+	///*
+	//	반복적으로 시간을 프린트한다.
+	//	외부에서 종료 시그널을 주면 go routine을 종료한다.
+	//*/
+	//
+	//infiniteLoop(terminate)
 
 }
 

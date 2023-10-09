@@ -1,5 +1,7 @@
 package main
 
+import "log"
+
 type Hub struct {
 	// Registered clients.
 	clients map[*Client]bool
@@ -12,6 +14,9 @@ type Hub struct {
 
 	// Unregister requests from clients.
 	unregister chan *Client
+
+	// Registered room
+	rooms map[string][]*Client
 }
 
 func newHub() *Hub {
@@ -20,6 +25,7 @@ func newHub() *Hub {
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]bool),
+		rooms:      make(map[string][]*Client),
 	}
 }
 
@@ -34,14 +40,25 @@ func (h *Hub) run() {
 				close(client.send)
 			}
 		case message := <-h.broadcast:
-			for client := range h.clients {
-				select {
-				case client.send <- message:
-				default:
-					close(client.send)
-					delete(h.clients, client)
-				}
+			room := message.ToRoom
+
+			clients, ok := h.rooms[room]
+			if !ok {
+				log.Printf("not found: room name: %v", room)
 			}
+
+			for _, client := range clients {
+				client.send <- message
+			}
+
+			//for client := range h.clients {
+			//	select {
+			//	case client.send <- message:
+			//	default:
+			//		close(client.send)
+			//		delete(h.clients, client)
+			//	}
+			//}
 		}
 	}
 }
