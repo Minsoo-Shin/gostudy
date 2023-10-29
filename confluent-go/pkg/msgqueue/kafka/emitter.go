@@ -1,6 +1,7 @@
 package kafka
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"gostudy/confluent-go/pkg/config"
@@ -30,7 +31,7 @@ func (e eventEmitter) Close() {
 	e.producer.Close()
 }
 
-func (e eventEmitter) Emit(messages []*kafka.Message) {
+func (e eventEmitter) Emit(messages []msgqueue.Event) {
 	// Delivery report handler for produced messages
 	go func() {
 		for e := range e.producer.Events() {
@@ -45,7 +46,11 @@ func (e eventEmitter) Emit(messages []*kafka.Message) {
 		}
 	}()
 	for _, msg := range messages {
-		err := e.producer.Produce(msg, nil)
+		msgB, _ := json.Marshal(msg)
+		kafkaMessage := &kafka.Message{
+			TopicPartition: kafka.TopicPartition{Topic: func(s string) *string { return &s }(msg.EventName())},
+			Value:          msgB}
+		err := e.producer.Produce(kafkaMessage, nil)
 		fmt.Println(err)
 	}
 

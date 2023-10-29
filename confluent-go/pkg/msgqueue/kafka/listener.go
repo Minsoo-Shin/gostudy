@@ -12,6 +12,7 @@ import (
 type eventListener struct {
 	consumer *kafka.Consumer
 	config   *config.Config
+	mapper   msgqueue.EventMapper
 	handler  *msgqueue.Processer // interface convention name + er
 }
 
@@ -28,6 +29,7 @@ func NewKafkaEventListener(cfg *config.Config, handler *msgqueue.Processer) msgq
 		consumer: c,
 		config:   cfg,
 		handler:  handler,
+		mapper:   msgqueue.NewEventMapper(),
 	}
 }
 
@@ -41,7 +43,16 @@ func (l eventListener) Listen() {
 		switch e := ev.(type) {
 		case *kafka.Message:
 			if l.handler != nil {
-				(*l.handler).Process(e)
+				event, _ := l.mapper.MapEvent(
+					func(p *string) string {
+						if p != nil {
+							return *p
+						}
+						return ""
+					}(e.TopicPartition.Topic),
+					e.Value,
+				)
+				(*l.handler).Process(event)
 			}
 			fmt.Printf("%% Message on %s:\n%s\n",
 				e.TopicPartition, string(e.Value))

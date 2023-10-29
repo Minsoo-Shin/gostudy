@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	config := config.New()
+	cfg := config.New()
 	// handler 생성 후 NewKafkaEventListener 인자에 주입
-	eventListener := kafka.NewKafkaEventListener(config, nil)
+	eventListener := kafka.NewKafkaEventListener(cfg, nil)
 	eventListener.Listen()
 }

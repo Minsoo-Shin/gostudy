@@ -29,7 +29,7 @@ func DefaultConfig() *Config {
 			GroupID          string   `yaml:"groupID"`
 			AutoOffsetReset  string   `yaml:"autoOffsetReset"`
 		}{
-			Topics:           []string{"myTopic"},
+			Topics:           []string{"eventCreated"},
 			BootstrapServers: "localhost:29092",
 			GroupID:          "test-group",
 			AutoOffsetReset:  "earliest",

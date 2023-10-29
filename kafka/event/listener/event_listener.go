@@ -42,7 +42,6 @@ func (p *EventProcessor) handleEvent(event msgqueue.Event) {
 	switch e := event.(type) {
 	case *contracts.EventCreatedEvent:
 		log.Printf("event %v created: %v", e.EventID, e)
-
 		_, err := p.Mongodb.Collection("event").InsertOne(context.Background(), e)
 		if err != nil {
 			fmt.Printf("err: %v", err)

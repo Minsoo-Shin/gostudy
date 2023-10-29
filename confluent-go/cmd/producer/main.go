@@ -1,8 +1,9 @@
 package main
 
 import (
-	kafkalib "github.com/confluentinc/confluent-kafka-go/v2/kafka"
+	"gostudy/confluent-go/domain/contracts"
 	"gostudy/confluent-go/pkg/config"
+	"gostudy/confluent-go/pkg/msgqueue"
 	"gostudy/confluent-go/pkg/msgqueue/kafka"
 )
 
@@ -17,14 +18,11 @@ func main() {
 	defer eventListener.Close()
 
 	for _, v := range []string{"test", "test2", "test3"} {
-		eventListener.Emit([]*kafkalib.Message{
-			{
-				TopicPartition: kafkalib.TopicPartition{
-					Topic: func(s string) *string { return &s }("myTopic"),
-				},
-				Value: []byte(v),
-			},
-		})
+		event := &contracts.EventCreatedEvent{
+			EventID:      1,
+			EventMessage: v,
+		}
+		eventListener.Emit([]msgqueue.Event{event})
 	}
 
 }
