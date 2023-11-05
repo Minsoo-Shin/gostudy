@@ -16,10 +16,10 @@ type eventListener struct {
 	sigchan  chan os.Signal
 	config   *config.Config
 	mapper   msgqueue.EventMapper
-	handler  *msgqueue.Processer // interface convention name + er
+	handler  msgqueue.Processer // interface convention name + er
 }
 
-func NewKafkaEventListener(cfg *config.Config, handler *msgqueue.Processer) msgqueue.Listener {
+func NewKafkaEventListener(cfg *config.Config, handler msgqueue.Processer) msgqueue.Listener {
 	sigchan := make(chan os.Signal, 1)
 	signal.Notify(sigchan, syscall.SIGINT, syscall.SIGTERM)
 
@@ -69,7 +69,7 @@ func (l eventListener) Listen() {
 						}(e.TopicPartition.Topic),
 						e.Value,
 					)
-					(*l.handler).Process(event)
+					l.handler.Process(event)
 				}
 				fmt.Printf("%% Message on %s:\n%s\n",
 					e.TopicPartition, string(e.Value))
@@ -81,7 +81,7 @@ func (l eventListener) Listen() {
 				// if enable.auto.commit isn't set to false (the default is true).
 				// By storing the offsets manually after completely processing
 				// each message, we can ensure atleast once processing.
-				_, err := c.StoreMessage(e)
+				_, err := l.consumer.StoreMessage(e)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "%% Error storing offset after message %s:\n",
 						e.TopicPartition)
