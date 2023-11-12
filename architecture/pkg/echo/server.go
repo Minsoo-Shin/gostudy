@@ -2,10 +2,10 @@ package echo
 
 import (
 	"fmt"
-	"ggurugi/docs"
-	"ggurugi/pkg/cli"
-	"ggurugi/pkg/config"
-	"ggurugi/pkg/logger"
+	"github.com/Minsoo-Shin/go-boilerplate/docs"
+	"github.com/Minsoo-Shin/go-boilerplate/pkg/cli"
+	"github.com/Minsoo-Shin/go-boilerplate/pkg/config"
+	"github.com/Minsoo-Shin/go-boilerplate/pkg/logger"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"

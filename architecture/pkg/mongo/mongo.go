@@ -3,26 +3,11 @@ package mongo
 import (
 	"context"
 	"fmt"
-	"ggurugi/pkg/config"
+	"github.com/Minsoo-Shin/go-boilerplate/pkg/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"time"
-)
-
-const (
-	SetOperator  = "$set"
-	PushOperator = "$push"
-	InOperator   = "$in"
-	NinOperator  = "$nin"
-	AndOperator  = "$and"
-	OrOperator   = "$or"
-	GtOperator   = "$gt"
-	GteOperator  = "$gte"
-	LtOperator   = "$lt"
-	LteOperator  = "$lte"
-	EqOperator   = "$eq"
-	NeOperator   = "$ne"
 )
 
 func New(cfg config.Config) *mongo.Client {
@@ -31,16 +16,12 @@ func New(cfg config.Config) *mongo.Client {
 		cfg.Mongo.Password,
 		cfg.Mongo.Host,
 	)
-	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
 	clientOptions := options.Client().
 		ApplyURI(uri).
-		SetServerAPIOptions(serverAPIOptions).
 		SetMinPoolSize(uint64(cfg.Mongo.Options.MinConnections)).
 		SetMaxPoolSize(uint64(cfg.Mongo.Options.MaxConnections)).
 		SetMaxConnIdleTime(10 * time.Minute)
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	client, err := mongo.Connect(ctx, clientOptions)
+	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}

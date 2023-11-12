@@ -1,12 +1,11 @@
 package jwt
 
 import (
-	"ggurugi/pkg/config"
-	eu "ggurugi/pkg/errors"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"github.com/Minsoo-Shin/go-boilerplate/pkg/config"
+	eu "github.com/Minsoo-Shin/go-boilerplate/pkg/errors"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/pkg/errors"
 	"time"
-
-	"github.com/golang-jwt/jwt"
 )
 
 const (
@@ -19,42 +18,47 @@ const (
 	_exp                     = "exp"
 )
 
-type CreateTokenRequest struct {
-	ID       primitive.ObjectID
-	UserName string
-	UserRole string
-	Duration time.Duration
-}
-
-func (ctr CreateTokenRequest) GetClaims() jwt.MapClaims {
-	claims := jwt.MapClaims{
-		_id:       ctr.ID,
-		_role:     ctr.UserRole,
-		_username: ctr.UserName,
-		_iat:      time.Now().Unix(),
-		_exp:      time.Now().Add(ctr.Duration).Unix(),
-	}
-	return claims
-}
-
-type Jwt interface {
-	CreateToken(req CreateTokenRequest) (string, error)
-}
-
 type jwtToken struct {
 	cfg config.Config
 }
 
-func New(cfg config.Config) Jwt {
+func New(cfg config.Config) Jwter {
 	return &jwtToken{
 		cfg: cfg,
 	}
 }
 
-func (j *jwtToken) CreateToken(request CreateTokenRequest) (string, error) {
-	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, request.GetClaims()).SignedString([]byte(j.cfg.Jwt.Secret))
+type TokenClaim struct {
+	ID       string
+	Duration time.Duration
+}
+
+func (j *jwtToken) NewToken(tokenClaim TokenClaim) (string, error) {
+	claims := &jwt.RegisteredClaims{
+		ExpiresAt: jwt.NewNumericDate(time.Now().UTC().Add(tokenClaim.Duration)),
+	}
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(j.cfg.Jwt.Secret))
 	if err != nil {
 		return "", eu.InternalError(err)
 	}
 	return token, nil
+}
+
+func (j *jwtToken) Verfiy(tokenString string) error {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte("AllYourBase"), nil
+	})
+
+	switch {
+	case token.Valid:
+		return nil
+	case errors.Is(err, jwt.ErrTokenMalformed):
+		return ErrTokenMalformed
+	case errors.Is(err, jwt.ErrTokenSignatureInvalid):
+		return ErrTokenInvalidSignature
+	case errors.Is(err, jwt.ErrTokenExpired) || errors.Is(err, jwt.ErrTokenNotValidYet):
+		return ErrTokenExpired
+	default:
+		return ErrTokenInValid
+	}
 }

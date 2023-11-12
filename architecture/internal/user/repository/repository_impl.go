@@ -3,8 +3,8 @@ package repository
 import (
 	"context"
 	"fmt"
-	"ggurugi/entity"
-	eu "ggurugi/pkg/errors"
+	"github.com/Minsoo-Shin/go-boilerplate/entity"
+	eu "github.com/Minsoo-Shin/go-boilerplate/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"

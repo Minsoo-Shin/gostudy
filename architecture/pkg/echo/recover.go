@@ -1,7 +1,7 @@
 package echo
 
 import (
-	eu "ggurugi/pkg/errors"
+	eu "github.com/Minsoo-Shin/go-boilerplate/pkg/errors"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )

@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"ggurugi/entity"
+	"github.com/Minsoo-Shin/go-boilerplate/entity"
 )
 
 // 현재는 학생만 고려하여 설계되어있음.

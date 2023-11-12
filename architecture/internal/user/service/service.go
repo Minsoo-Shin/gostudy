@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"gostudy/architecture/entity"
-	"gostudy/architecture/internal/user/repository"
+	"github.com/Minsoo-Shin/go-boilerplate/entity"
+	"github.com/Minsoo-Shin/go-boilerplate/internal/user/repository"
 )
 
 type service struct {

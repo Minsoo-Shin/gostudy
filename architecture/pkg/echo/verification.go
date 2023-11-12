@@ -2,7 +2,7 @@ package echo
 
 import (
 	"fmt"
-	eu "ggurugi/pkg/errors"
+	eu "github.com/Minsoo-Shin/go-boilerplate/pkg/errors"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/thoas/go-funk"

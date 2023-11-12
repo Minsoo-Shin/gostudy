@@ -1,9 +1,7 @@
 package util
 
 import (
-	"fmt"
 	"reflect"
-	"time"
 )
 
 func InitEmptySlice(any interface{}) {
@@ -26,11 +24,4 @@ func InitEmptySlice(any interface{}) {
 			InitEmptySlice(fieldValue.Addr().Interface())
 		}
 	}
-}
-
-func GetTestDateKey(date int64) string {
-	t := time.Unix(date, 0).Local()
-	year, month, day := t.Date()
-
-	return fmt.Sprintf("%d%02d%02d", year, month, day)
 }

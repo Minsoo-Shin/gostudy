@@ -3,7 +3,7 @@ package echo
 import (
 	"context"
 	"errors"
-	"ggurugi/pkg/config"
+	"github.com/Minsoo-Shin/go-boilerplate/pkg/config"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 	"go.uber.org/fx"

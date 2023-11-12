@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"ggurugi/entity"
-	"ggurugi/pkg/util"
+	"github.com/Minsoo-Shin/go-boilerplate/entity"
+	"github.com/Minsoo-Shin/go-boilerplate/pkg/util"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )

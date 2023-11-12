@@ -2,10 +2,8 @@ package context
 
 import (
 	"context"
-	eu "ggurugi/pkg/errors"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 const (
@@ -36,56 +34,4 @@ func (u Util) NewContextFromEcho(c echo.Context) context.Context {
 		User:      user,
 		RequestID: requestID,
 	})
-}
-
-func (u Util) GetUserID(ctx context.Context) (primitive.ObjectID, error) {
-	store := ctx.Value(Store).(map[string]interface{})
-
-	user, ok := store[User].(*jwt.Token)
-
-	if !ok {
-		return primitive.NilObjectID, eu.InternalError("err: can't get token from context")
-	}
-
-	if user == nil {
-		return primitive.NilObjectID, eu.InternalError("err: can't get token from context")
-	}
-
-	claims := user.Claims.(jwt.MapClaims)
-
-	userID, ok := claims["id"].(string)
-
-	if !ok {
-		return primitive.NilObjectID, eu.InternalError("err: can't get userID from claims")
-	}
-	ID, err := primitive.ObjectIDFromHex(userID)
-	if err != nil {
-		return primitive.NilObjectID, eu.InternalError("err: can't get userID from claims")
-	}
-
-	return ID, nil
-}
-
-func (u Util) GetRole(ctx context.Context) (string, error) {
-	store := ctx.Value(Store).(map[string]interface{})
-
-	user, ok := store[User].(*jwt.Token)
-
-	if !ok {
-		return "", eu.InternalError("err: can't get token from context")
-	}
-
-	if user == nil {
-		return "", eu.InternalError("err: can't get token from context")
-	}
-
-	claims := user.Claims.(jwt.MapClaims)
-
-	role, ok := claims["role"].(string)
-
-	if !ok {
-		return "", eu.InternalError("err: can't get userID from claims")
-	}
-
-	return role, nil
 }

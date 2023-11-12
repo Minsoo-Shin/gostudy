@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"ggurugi/internal/user/service"
+	"github.com/Minsoo-Shin/go-boilerplate/internal/user/service"
 )
 
 type controller struct {

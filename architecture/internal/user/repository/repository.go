@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
-	"ggurugi/entity"
-	"ggurugi/pkg/config"
+	"github.com/Minsoo-Shin/go-boilerplate/entity"
+	"github.com/Minsoo-Shin/go-boilerplate/pkg/config"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
