@@ -3,7 +3,7 @@ package mongo
 import (
 	"context"
 	"fmt"
-	"github.com/Minsoo-Shin/go-boilerplate/pkg/config"
+	"github.com/Minsoo-Shin/go-boilerplate/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"

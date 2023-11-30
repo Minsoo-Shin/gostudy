@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/Minsoo-Shin/go-boilerplate/entity"
+	"github.com/Minsoo-Shin/go-boilerplate/domain"
 	"github.com/Minsoo-Shin/go-boilerplate/pkg/util"
 	"github.com/labstack/echo/v4"
 	"net/http"
@@ -14,7 +14,7 @@ import (
 // @Success 204
 // @Router /users [post]
 func (c controller) CreateUser(ctx echo.Context) error {
-	var request entity.UserSaveRequest
+	var request domain.UserSaveRequest
 
 	if err := ctx.Bind(&request); err != nil {
 		return err
@@ -37,7 +37,7 @@ func (c controller) CreateUser(ctx echo.Context) error {
 // @Tags         user
 // @Router /users/sign-in [post]
 func (c controller) SignIn(ctx echo.Context) error {
-	var request entity.UserSignInRequest
+	var request domain.UserSignInRequest
 
 	if err := ctx.Bind(&request); err != nil {
 		return err
@@ -64,7 +64,7 @@ func (c controller) SignIn(ctx echo.Context) error {
 // @Success 200
 // @Router /users [get]
 func (c controller) GetUser(ctx echo.Context) error {
-	var request entity.GetUserRequest
+	var request domain.GetUserRequest
 	if err := ctx.Bind(&request); err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func (c controller) GetUser(ctx echo.Context) error {
 // @Router /users/{userID} [put]
 func (c controller) UpdateUser(ctx echo.Context) error {
 	var (
-		request entity.UpdateUserRequest
+		request domain.UpdateUserRequest
 		err     error
 	)
 	context := c.ctxutil.NewContextFromEcho(ctx)
@@ -129,7 +129,7 @@ func (c controller) UpdateUser(ctx echo.Context) error {
 // @Router /users [delete]
 func (c controller) DeleteUser(ctx echo.Context) error {
 	var (
-		request entity.UserDeleteRequest
+		request domain.UserDeleteRequest
 		err     error
 	)
 	context := c.ctxutil.NewContextFromEcho(ctx)
@@ -155,7 +155,7 @@ func (c controller) DeleteUser(ctx echo.Context) error {
 }
 
 func (c controller) CheckDuplicatedUserID(ctx echo.Context) error {
-	var request entity.CheckDuplicatedUserIDRequest
+	var request domain.CheckDuplicatedUserIDRequest
 
 	if err := ctx.Bind(&request); err != nil {
 		return err
@@ -174,7 +174,7 @@ func (c controller) CheckDuplicatedUserID(ctx echo.Context) error {
 }
 
 func (c controller) CheckDuplicatedEmail(ctx echo.Context) error {
-	var request entity.CheckDuplicatedEmailRequest
+	var request domain.CheckDuplicatedEmailRequest
 
 	if err := ctx.Bind(&request); err != nil {
 		return err
@@ -193,7 +193,7 @@ func (c controller) CheckDuplicatedEmail(ctx echo.Context) error {
 }
 
 func (c controller) CheckExistingTeacherUserID(ctx echo.Context) error {
-	var request entity.CheckExistingTeacherUserIDRequest
+	var request domain.CheckExistingTeacherUserIDRequest
 
 	if err := ctx.Bind(&request); err != nil {
 		return err

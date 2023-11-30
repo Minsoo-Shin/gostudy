@@ -2,12 +2,13 @@ package main
 
 import (
 	"context"
+	"github.com/Minsoo-Shin/go-boilerplate/config"
 	userController "github.com/Minsoo-Shin/go-boilerplate/internal/user/controller"
-	userRepository "github.com/Minsoo-Shin/go-boilerplate/internal/user/repository"
+	userRepository "github.com/Minsoo-Shin/go-boilerplate/internal/user/repository/postgresstore"
 	userService "github.com/Minsoo-Shin/go-boilerplate/internal/user/service"
-	"github.com/Minsoo-Shin/go-boilerplate/pkg/config"
 	ctxutil "github.com/Minsoo-Shin/go-boilerplate/pkg/context"
 	"github.com/Minsoo-Shin/go-boilerplate/pkg/echo"
+	"github.com/Minsoo-Shin/go-boilerplate/pkg/gorm"
 	"github.com/Minsoo-Shin/go-boilerplate/pkg/jwt"
 	"github.com/Minsoo-Shin/go-boilerplate/pkg/logger"
 	"github.com/Minsoo-Shin/go-boilerplate/pkg/mongo"
@@ -25,6 +26,7 @@ func main() {
 			jwt.New,
 			ctxutil.New,
 			redis.New,
+			gorm.New,
 
 			userRepository.New,
 			userService.New,

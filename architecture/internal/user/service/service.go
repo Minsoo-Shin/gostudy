@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"github.com/Minsoo-Shin/go-boilerplate/entity"
+	"github.com/Minsoo-Shin/go-boilerplate/domain"
 	"github.com/Minsoo-Shin/go-boilerplate/internal/user/repository"
 )
 
@@ -17,8 +17,8 @@ func New(repository repository.Repository) Service {
 }
 
 type Service interface {
-	Find(ctx context.Context, request entity.GetUserRequest) (entity.GetUserResponse, error)
-	Update(ctx context.Context, request entity.UpdateUserRequest) error
-	Delete(ctx context.Context, request entity.UserDeleteRequest) error
-	FindAll(ctx context.Context, request entity.UserFindAllRequest) error
+	Find(ctx context.Context, request domain.GetUserRequest) (domain.GetUserResponse, error)
+	Update(ctx context.Context, request domain.UpdateUserRequest) error
+	Delete(ctx context.Context, request domain.UserDeleteRequest) error
+	FindAll(ctx context.Context, request domain.UserFindAllRequest) error
 }

@@ -12,7 +12,7 @@ type (
 		App   `yaml:"app"`
 		HTTP  `yaml:"http"`
 		Log   `yaml:"logger"`
-		Mongo `yaml:"mongo"`
+		Mysql `yaml:"Mysql"`
 		Jwt   `yaml:"jwt"`
 	}
 
@@ -33,7 +33,7 @@ type (
 	}
 
 	// Mongo -.
-	Mongo struct {
+	Mysql struct {
 		Host     string `env-required:"true" yaml:"host"`
 		User     string `env-required:"true" yaml:"user"`
 		Password string `env-required:"true" yaml:"password"`

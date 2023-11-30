@@ -2,9 +2,9 @@ package echo
 
 import (
 	"fmt"
+	"github.com/Minsoo-Shin/go-boilerplate/config"
 	"github.com/Minsoo-Shin/go-boilerplate/docs"
 	"github.com/Minsoo-Shin/go-boilerplate/pkg/cli"
-	"github.com/Minsoo-Shin/go-boilerplate/pkg/config"
 	"github.com/Minsoo-Shin/go-boilerplate/pkg/logger"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"

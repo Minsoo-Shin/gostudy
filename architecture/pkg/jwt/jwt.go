@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"github.com/Minsoo-Shin/go-boilerplate/pkg/config"
+	"github.com/Minsoo-Shin/go-boilerplate/config"
 	eu "github.com/Minsoo-Shin/go-boilerplate/pkg/errors"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/pkg/errors"
