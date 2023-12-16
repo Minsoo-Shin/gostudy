@@ -17,8 +17,8 @@ func New(repository repository.Repository) Service {
 }
 
 type Service interface {
-	Find(ctx context.Context, request domain.GetUserRequest) (domain.GetUserResponse, error)
-	Update(ctx context.Context, request domain.UpdateUserRequest) error
+	Find(ctx context.Context, request domain.UserFindRequest) (domain.UserDto, error)
+	Update(ctx context.Context, request domain.UserUpdateRequest) error
 	Delete(ctx context.Context, request domain.UserDeleteRequest) error
-	FindAll(ctx context.Context, request domain.UserFindAllRequest) error
+	FindAll(ctx context.Context, request domain.UserFindAllRequest) (domain.UserDtos, error)
 }
