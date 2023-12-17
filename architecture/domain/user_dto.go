@@ -1,10 +1,22 @@
 package domain
 
 import (
+	eu "github.com/Minsoo-Shin/go-boilerplate/pkg/errors"
 	"time"
 )
 
+type UserCreateRequest struct {
+	Name      string
+	Birthdate time.Time
+	Email     string
+	Username  string
+	Password  string
+}
+
 type UserUpdateRequest struct {
+	ID        uint
+	Name      string
+	Birthdate time.Time
 }
 
 type UserDeleteRequest struct {
@@ -13,6 +25,13 @@ type UserDeleteRequest struct {
 
 type UserFindRequest struct {
 	ID uint
+}
+
+func (u UserFindRequest) Valid() error {
+	if u.ID == 0 {
+		return eu.ErrBadRequest
+	}
+	return nil
 }
 
 type UserFindAllRequest struct {
