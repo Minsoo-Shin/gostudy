@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/protobuf_example/grpc-go" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/protobuf_example/open_api_gen/include/googleapis" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/protobuf_example/open_api_gen/include/grpc-gateway" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/protobuf_example/rk-demo" vcs="Git" />
   </component>
 </project>
