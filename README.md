@@ -25,3 +25,4 @@ clean architecture 기반으로 boilerplate 입니다.
 ## util
 -  nilasempty : json marshaling initialize nil slice as empty slice
    - (`sliceField: null` => `sliceField: []`)
+## test
