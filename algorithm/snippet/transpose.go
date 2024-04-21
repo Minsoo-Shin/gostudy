@@ -1,4 +1,4 @@
-package snipet
+package snippet
 
 func Transpose(matrix [][]int) [][]int {
 	rows := len(matrix)

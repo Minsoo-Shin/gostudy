@@ -1,4 +1,4 @@
-package snipet
+package snippet
 
 func rotateLeftByOne1DArray(arr []int) []int {
 	if len(arr) == 0 {

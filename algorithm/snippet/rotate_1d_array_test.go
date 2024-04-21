@@ -1,4 +1,4 @@
-package snipet
+package snippet
 
 import (
 	"fmt"
