@@ -83,7 +83,7 @@ func (ct controller) UploadFile(c *gin.Context) {
 
 	checksum := hex.EncodeToString(hash.Sum(nil))
 
-	newFile, err := ct.repository.Create(entity.File{
+	newFile, err := ct.repository.Create(&entity.File{
 		FileName:      req.File.Filename,
 		RelativePath:  req.FilePath,
 		IsDirectory:   true,
