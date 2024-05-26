@@ -4,7 +4,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
-ADD . /app
+ADD .. /app
 
 ARG BUILD_ARG='local'
 ENV BUILD_ENV=$BUILD_ARG

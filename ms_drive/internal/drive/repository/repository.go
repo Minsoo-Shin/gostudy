@@ -5,11 +5,6 @@ import (
 	"gorm.io/gorm"
 )
 
-var (
-	id                int64
-	memoryFileStorage = map[int64]entity.File{}
-)
-
 type DriverRepository interface {
 	Create(entity *entity.File) (entity.File, error)
 	Get(id int64) (entity.File, error)
