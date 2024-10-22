@@ -1,0 +1,36 @@
+goos: darwin
+goarch: arm64
+pkg: gostudy/sychronization/paravsseq
+cpu: Apple M1
+BenchmarkSequentialMergeSort-8   	    1598	    714902 ns/op
+BenchmarkSequentialMergeSort-8   	    1669	    754696 ns/op
+BenchmarkSequentialMergeSort-8   	    1648	    740901 ns/op
+BenchmarkSequentialMergeSort-8   	    1662	    716927 ns/op
+BenchmarkSequentialMergeSort-8   	    1650	    714099 ns/op
+BenchmarkSequentialMergeSort-8   	    1671	    714334 ns/op
+BenchmarkSequentialMergeSort-8   	    1653	    715294 ns/op
+BenchmarkSequentialMergeSort-8   	    1654	    714829 ns/op
+BenchmarkSequentialMergeSort-8   	    1656	    714192 ns/op
+BenchmarkSequentialMergeSort-8   	    1658	    713908 ns/op
+BenchmarkParallelMergeSortV1-8   	     146	   7040481 ns/op
+BenchmarkParallelMergeSortV1-8   	     170	   6985021 ns/op
+BenchmarkParallelMergeSortV1-8   	     168	   6956268 ns/op
+BenchmarkParallelMergeSortV1-8   	     170	   6939109 ns/op
+BenchmarkParallelMergeSortV1-8   	     172	   6884717 ns/op
+BenchmarkParallelMergeSortV1-8   	     169	   7022086 ns/op
+BenchmarkParallelMergeSortV1-8   	     171	   7061706 ns/op
+BenchmarkParallelMergeSortV1-8   	     170	   7129239 ns/op
+BenchmarkParallelMergeSortV1-8   	     168	   6940181 ns/op
+BenchmarkParallelMergeSortV1-8   	     169	   7008881 ns/op
+BenchmarkParallelMergeSortV2-8   	    1995	    537748 ns/op
+BenchmarkParallelMergeSortV2-8   	    2158	    534531 ns/op
+BenchmarkParallelMergeSortV2-8   	    2149	    545748 ns/op
+BenchmarkParallelMergeSortV2-8   	    2208	    542973 ns/op
+BenchmarkParallelMergeSortV2-8   	    2227	    541940 ns/op
+BenchmarkParallelMergeSortV2-8   	    2185	    538861 ns/op
+BenchmarkParallelMergeSortV2-8   	    2229	    547054 ns/op
+BenchmarkParallelMergeSortV2-8   	    2224	    537083 ns/op
+BenchmarkParallelMergeSortV2-8   	    2229	    534317 ns/op
+BenchmarkParallelMergeSortV2-8   	    2106	    541285 ns/op
+PASS
+ok  	gostudy/sychronization/paravsseq	44.480s
